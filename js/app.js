@@ -1,3 +1,9 @@
+var i = 0;
+var numero = 0;
+var imagen = 0;
+var intervalo = 0;
+var eliminar = 0;
+
 //---------Iteración de color en el titulo----------//
 function tituloBlanco(elemento){
   $(elemento).animate(
@@ -19,62 +25,29 @@ function tituloAmarillo(elemento){
   )
 }
 
-var imagenes = new Array(
-  "image/1.png",
-  "image/2.png",
-  "image/3.png",
-  "image/4.png",
-  "image/1.png",
-  "image/2.png",
-  "image/3.png"
-);
+function desplazamiento(){
+	i=i+1
+	var numero=0;
+	var imagen=0;
+	$(".elemento").draggable({disabled:true});
+	if(i<8){
+		for(var j=1;j<8;j++){
+			if($(".col-"+j).children("img:nth-child("+i+")").html()==null){
+				numero=Math.floor(Math.random()*4)+1;
+				imagen="image/"+numero+".png";
+				$(".col-"+j).prepend("<img src="+imagen+" class='elemento'/>").css("justify-content","flex-start")
+			}}}
+	if(i==8){
+	clearInterval(intervalo);
+	eliminar=setInterval(function(){
+		eliminarhorver()
+	},150);}
+};
 
 
-
-function rellenoImagen(){
-
-
-
-  /***$(".col-1").append("<img src='image/1.png'>")
-  $(".col-1").append("<img src='image/2.png'>")
-  $(".col-1").append("<img src='image/3.png'>")
-  $(".col-1").append("<img src='image/4.png'>")
-  $(".col-2").append("<img src='image/1.png'>")
-  $(".col-2").append("<img src='image/2.png'>")
-  $(".col-2").append("<img src='image/3.png'>")
-  $(".col-2").append("<img src='image/4.png'>")
-  $(".col-3").append("<img src='image/1.png'>")
-  $(".col-3").append("<img src='image/2.png'>")
-  $(".col-3").append("<img src='image/3.png'>")
-  $(".col-3").append("<img src='image/4.png'>")
-  $(".col-4").append("<img src='image/1.png'>")
-  $(".col-4").append("<img src='image/2.png'>")
-  $(".col-4").append("<img src='image/3.png'>")
-  $(".col-4").append("<img src='image/4.png'>")
-  $(".col-5").append("<img src='image/1.png'>")
-  $(".col-5").append("<img src='image/2.png'>")
-  $(".col-5").append("<img src='image/3.png'>")
-  $(".col-5").append("<img src='image/4.png'>")
-  $(".col-6").append("<img src='image/1.png'>")
-  $(".col-6").append("<img src='image/2.png'>")
-  $(".col-6").append("<img src='image/3.png'>")
-  $(".col-6").append("<img src='image/4.png'>")
-  $(".col-7").append("<img src='image/1.png'>")
-  $(".col-7").append("<img src='image/2.png'>")
-  $(".col-7").append("<img src='image/3.png'>")
-  $(".col-7").append("<img src='image/4.png'>")*/
-}
-
-function rellenoAleatorio(){
-  rellenoImagen()
-  colum1
-}
 
 
 $(function(){
   tituloBlanco(".main-titulo")
 
-  $.each(imagenes, function(index, value){
-    $(".col-1").append("<img src=' "+this+" '   class='elemento'>   ")
-  })
 });
