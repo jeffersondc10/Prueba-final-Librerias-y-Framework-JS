@@ -7,6 +7,12 @@ var seg = 0;
 var min = 2;
 var tiempo = 0;
 var score = 0;
+var lencolum=["","","","","","",""];
+var lenrest=["","","","","","",""];
+var nuevosDulces = 0;
+var buscarNuevosDulces = 0;
+var mov = 0;
+
 
 //---------Iteración de color en el titulo----------//
 function tituloBlanco(elemento){
@@ -179,13 +185,71 @@ function vertical(){
 	return busVerti;
 };
 
+//---------Función para intercambiar dulces-------------------------------------
+jQuery.fn.swap=function(b){
+	b=jQuery(b)[0];
+	var a=this[0];
+	var t=a.parentNode.insertBefore(document.createTextNode(''),a);
+	b.parentNode.insertBefore(a,b);
+	t.parentNode.insertBefore(b,t);
+	t.parentNode.removeChild(t);
+	return this;
+};
+
+//---------Función para crear nuevos dulces---------------------------------------------
+function nuevosdulces(){
+	$(".elemento").draggable({disabled:true});
+	$("div[class^='col']").css("justify-content","flex-start")
+	for(var j=1;j<8;j++){
+		lencolum[j-1]=$(".col-"+j).children().length;}
+	if(buscarNuevosDulces==0){
+		for(var j=0;j<7;j++){
+			lenrest[j]=(7-lencolum[j]);}
+		maximo=Math.max.apply(null,lenrest);
+		contadorTotal=maximo;}
+	if(maximo!=0){
+		if(buscarNuevosDulces==1){
+			for(var j=1;j<8;j++){
+				if(contadorTotal>(maximo-lenrest[j-1])){
+					$(".col-"+j).children("img:nth-child("+(lenrest[j-1])+")").remove("img");}}
+		}
+		if(buscarNuevosDulces==0){
+			buscarNuevosDulces=1;
+			for(var k=1;k<8;k++){
+				for(var j=0;j<(lenrest[k-1]-1);j++){
+					$(".col-"+k).prepend("<img src='' class='elemento' style='visibility:hidden'/>");}}
+		}
+		for(var j=1;j<8;j++){
+			if(contadorTotal>(maximo-lenrest[j-1])){
+				numero=Math.floor(Math.random()*4)+1;
+				imagen="image/"+numero+".png";
+				$(".col-"+j).prepend("<img src="+imagen+" class='elemento'/>");}
+		}
+	}
+	if(contadorTotal==1){
+		clearInterval(nuevosDulces);
+		eliminar=setInterval(function(){
+			eliminarhorver()
+		},150);
+	}
+	contadorTotal=contadorTotal-1;
+};
+
 $(function(){
   tituloBlanco(".main-titulo")
   $(".btn-reinicio").on("click", function(){
     i=0;
+    mov=0;
+    score=0;
+    $(".panel-score").css("width","25%");
+    $(".panel-tablero").show();
+    $("#score-text").text("0");
+    $("#movimientos-text").text("0");
     $(this).text("Reiniciar")
     clearInterval(intervalo);
     clearInterval(tiempo);
+    clearInterval(eliminar);
+    clearInterval(nuevosDulces);
     min = 2;
     seg = 0;
     borrartotal()
